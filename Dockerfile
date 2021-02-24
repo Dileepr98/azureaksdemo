@@ -1,6 +1,27 @@
-FROM node:14
-WORKDIR /usr/src/app
-COPY package*.json app.js ./
+FROM node:latest
+
+LABEL Author="Dileep Singh"
+
+ENV PORT 8080
+ENV WDIR /usr/src/app
+
+#Create app directory
+RUN mkdir -p ${WDIR}
+WORKDIR ${WDIR}
+
+#Build app source
+COPY . . 
+
+#run NPM install
 RUN npm install
-EXPOSE 3000
-CMD ["node", "app.js"]
+
+#Verify files are there
+RUN find ${WDIR} -type f -follow -print | grep -v ./node_modules
+
+#port for web
+EXPOSE ${PORT}
+
+HEALTHCHECK --interval=5m --timeout=3s \ 
+    CMD curl -f http:://localhost:${PORT} || exit 1
+
+CMD ["npm", "start"]
