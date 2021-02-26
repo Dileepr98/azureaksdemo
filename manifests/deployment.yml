@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: dileeprazureaksdemo 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dileeprazureaksdemo
+  template:
+    metadata:
+      labels:
+        app: dileeprazureaksdemo 
+    spec:
+      containers:
+        - name: dileeprazureaksdemo 
+          image: k8snodedemoreg.azurecr.io/dileeprazureaksdemo
+          ports:
+          - containerPort: 8080
